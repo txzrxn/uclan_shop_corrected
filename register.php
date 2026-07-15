@@ -141,14 +141,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="full_name">Full name</label>
         <input type="text" id="full_name" name="full_name" value="<?php echo h($full_name); ?>" required autocomplete="name">
 
-        <label for="email">Email address</label>
+          <label for="email">Email address</label>
         <input type="email" id="email" name="email" value="<?php echo h($email); ?>" required autocomplete="email">
-
+ 
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" required autocomplete="new-password">
-
+        <input type="password" id="password" name="password" required autocomplete="new-password" minlength="8" aria-describedby="passwordHelp">
+        <p class="field-hint" id="passwordHelp">At least 8 characters, with an uppercase letter, a lowercase letter, and a number.</p>
+ 
         <label for="confirm_password">Confirm password</label>
-        <input type="password" id="confirm_password" name="confirm_password" required autocomplete="new-password">
+        <input type="password" id="confirm_password" name="confirm_password" required autocomplete="new-password" minlength="8">
 
         <button type="submit" class="btn-primary auth-submit">Create Account</button>
 
