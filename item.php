@@ -158,6 +158,7 @@ if ($reviews) {
     </nav>
 
     <a href="products.php" class="back-link">&#8592; Back to Products</a>
+    
 
     <?php if (!$product): ?>
         <div class="form-errors" role="alert">
@@ -214,6 +215,24 @@ if ($reviews) {
                     <span><?php echo number_format($average_rating, 1); ?>/5 average</span>
                 <?php endif; ?>
             </div>
+             <div class="review-list">
+                <?php if (!$reviews): ?>
+                    <p class="empty-state">Be the first person to review this product.</p>
+                <?php else: ?>
+                    <?php foreach ($reviews as $review): ?>
+                        <article class="review-card">
+                            <div class="review-card-heading">
+                                <h3><?php echo h($review['review_title']); ?></h3>
+                                <span class="review-rating" aria-label="<?php echo (int) $review['review_rating']; ?> out of 5 stars"><?php echo str_repeat('★', (int) $review['review_rating']); ?><?php echo str_repeat('☆', 5 - (int) $review['review_rating']); ?></span>
+                            </div>
+                            <p><?php echo nl2br(h($review['review_desc'])); ?></p>
+                            <p class="review-meta">By <?php echo h($review['full_name']); ?> on <?php echo h(date('j F Y', strtotime($review['review_timestamp']))); ?></p>
+                        </article>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+
+            <br>
 
             <?php if (isset($_GET['review']) && $_GET['review'] === 'added'): ?>
                 <div class="success-message" role="status">Your review was saved successfully.</div>
@@ -252,22 +271,7 @@ if ($reviews) {
                 <p class="login-prompt"><a href="login.php?next=<?php echo rawurlencode('item.php?id=' . $product_id . '#reviews'); ?>">Log in</a> to submit a review.</p>
             <?php endif; ?>
 
-            <div class="review-list">
-                <?php if (!$reviews): ?>
-                    <p class="empty-state">Be the first person to review this product.</p>
-                <?php else: ?>
-                    <?php foreach ($reviews as $review): ?>
-                        <article class="review-card">
-                            <div class="review-card-heading">
-                                <h3><?php echo h($review['review_title']); ?></h3>
-                                <span class="review-rating" aria-label="<?php echo (int) $review['review_rating']; ?> out of 5 stars"><?php echo str_repeat('★', (int) $review['review_rating']); ?><?php echo str_repeat('☆', 5 - (int) $review['review_rating']); ?></span>
-                            </div>
-                            <p><?php echo nl2br(h($review['review_desc'])); ?></p>
-                            <p class="review-meta">By <?php echo h($review['full_name']); ?> on <?php echo h(date('j F Y', strtotime($review['review_timestamp']))); ?></p>
-                        </article>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </div>
+           
         </section>
     <?php endif; ?>
 </main>
