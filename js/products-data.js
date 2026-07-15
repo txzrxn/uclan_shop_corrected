@@ -1,0 +1,1 @@
+/* Product data is now loaded from MySQL in products.php and item.php. */
