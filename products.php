@@ -122,8 +122,8 @@ $page_heading = $type === '' ? 'All Legacy Products' : $type;
         <?php if ($type !== ''): ?>
             <input type="hidden" name="type" value="<?php echo h($type); ?>">
         <?php endif; ?>
-        <label for="search" class="visually-hidden">Search by product name</label>
-        <input type="text" id="search" name="search" value="<?php echo h($search); ?>" placeholder="Search by product name..." style="padding:0.45rem 0.9rem; border-radius:20px; border:2px solid var(--uclan-blue); min-width:200px;">
+        <label for="search" class="visually-hidden">Search by product name or colour </label>
+        <input type="text" id="search" name="search" value="<?php echo h($search); ?>" placeholder="Search by product name or colour..." style="padding:0.45rem 0.9rem; border-radius:20px; border:2px solid var(--uclan-blue); min-width:200px;">
         <button type="submit" class="btn btn-primary btn-sm">Search</button>
         <?php if ($search !== ''): ?>
             <a href="products.php<?php echo $type !== '' ? '?type=' . rawurlencode($type) : ''; ?>" class="btn btn-secondary btn-sm">Reset</a>
