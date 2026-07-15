@@ -28,8 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Enter a valid email address.";
     }
 
-    if (strlen($password) < 6) {
-        $errors[] = "Password must be at least 6 characters.";
+     if (strlen($password) < 8) {
+        $errors[] = "Password must be at least 8 characters.";
+    } elseif (!preg_match('/[A-Z]/', $password)) {
+        $errors[] = "Password must contain at least one uppercase letter.";
+    } elseif (!preg_match('/[a-z]/', $password)) {
+        $errors[] = "Password must contain at least one lowercase letter.";
+    } elseif (!preg_match('/[0-9]/', $password)) {
+        $errors[] = "Password must contain at least one number.";
     }
 
     if ($password !== $confirm_password) {
