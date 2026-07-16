@@ -2,12 +2,11 @@
 
 ## Submission information (required by the brief)
 
-- **Student name:** [YOUR FULL NAME]
-- **Student ID:** [YOUR STUDENT ID, e.g. G21406018]
-- **Homepage URL:** http://localhost/uclan_shop_corrected/ (Vesta: [YOUR VESTA URL])
-- **Dummy account (login/checkout access):** `demo@uclan.ac.uk` / `Legacy2026`
-- **Second seeded account (used for reviews):** `reviewer@uclan.ac.uk` / `Legacy2026`
-- **GitHub repository:** [YOUR GITHUB REPO URL]
+- **Student name:** TAZRYANBINTE KASHEM
+- **Student ID:**G21406018
+- **Homepage URL:** http://localhost/kashem_tazryan/
+-
+- 
 
 Both dummy accounts are inserted automatically when `uclan_shop_corrected.sql` is imported, together with two pre-populated reviews (with scores) for product 21 (Red UCLan Hoodie), so the average rating is visible on `item.php?id=21` without any manual setup.
 
@@ -70,6 +69,9 @@ Change these values for a different XAMPP setup or for the Vesta server.
 
 
 ## Manual testing checklist
+
+demo user ID: demo@gmail.com 
+password: Demo@0123
 
 ### Navigation
 

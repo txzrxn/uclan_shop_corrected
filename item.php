@@ -389,7 +389,7 @@ const product = <?php echo json_encode([
 
             const cart = readCart();
             const existing = cart.find(function (item) {
-               return Number(item.productId) === product.productId && String(item.size || '') === size;
+                return Number(item.productId) === product.productId && String(item.size) === size;
             });
 
             if (existing) {
@@ -400,6 +400,7 @@ const product = <?php echo json_encode([
                     name: product.name,
                     price: product.price,
                     image: product.image,
+                    size: size,
                     qty: quantity
                 });
             }

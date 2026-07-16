@@ -1135,3 +1135,11 @@ nav[aria-label="Primary navigation"] a.user-greeting-link {
     line-height: 1.2;
     white-space: nowrap;
 }
+
+/* Size selector on the item page and size line in the cart. */
+.size-select {
+    padding: 0.45rem 0.9rem; border-radius: 20px;
+    border: 2px solid var(--uclan-blue); font-family: inherit;
+    font-size: 0.9rem; background: var(--uclan-white); cursor: pointer;
+}
+.cart-item-size { font-size: 0.85rem; color: var(--uclan-dark-grey); }

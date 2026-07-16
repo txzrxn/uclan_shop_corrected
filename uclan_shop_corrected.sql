@@ -1,5 +1,8 @@
 -- Corrected UCLan Legacy Shop database
 -- Import this file into a new database named uclan_shop.
+DROP DATABASE IF EXISTS uclan_shop;
+CREATE DATABASE uclan_shop;
+USE uclan_shop;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
