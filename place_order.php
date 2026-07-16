@@ -36,20 +36,28 @@ if (!is_array($items) || !$items || count($items) > 50) {
 }
 
 $quantities = [];
+$valid_sizes = ['', 'S', 'M', 'L', 'XL', 'XXL'];
 foreach ($items as $item) {
     $product_id = filter_var($item['product_id'] ?? null, FILTER_VALIDATE_INT);
     $quantity = filter_var($item['quantity'] ?? null, FILTER_VALIDATE_INT);
+    $size = strtoupper(trim((string) ($item['size'] ?? '')));
 
     if (!$product_id || !$quantity || $quantity < 1 || $quantity > 10) {
         json_response(422, ['success' => false, 'message' => 'A cart item has an invalid product ID or quantity.']);
     }
 
-    if (!isset($quantities[$product_id])) {
-        $quantities[$product_id] = 0;
+    if (!in_array($size, $valid_sizes, true)) {
+        json_response(422, ['success' => false, 'message' => 'A cart item has an invalid clothing size.']);
     }
-    $quantities[$product_id] += $quantity;
 
-    if ($quantities[$product_id] > 10) {
+    // Group by product AND size so two sizes of the same product stay separate order lines.
+    $line_key = $product_id . '|' . $size;
+    if (!isset($quantities[$line_key])) {
+        $quantities[$line_key] = 0;
+    }
+    $quantities[$line_key] += $quantity;
+
+    if ($quantities[$line_key] > 10) {
         json_response(422, ['success' => false, 'message' => 'The maximum quantity for one product is 10.']);
     }
 }
@@ -87,7 +95,10 @@ if (!$product_query) {
 $order_items = [];
 $subtotal = 0.0;
 
-foreach ($quantities as $product_id => $quantity) {
+foreach ($quantities as $line_key => $quantity) {
+    list($product_id, $size) = explode('|', (string) $line_key, 2);
+    $product_id = (int) $product_id;
+    $size = (string) $size;
     mysqli_stmt_bind_param($product_query, 'i', $product_id);
     mysqli_stmt_execute($product_query);
     $result = mysqli_stmt_get_result($product_query);
@@ -109,10 +120,11 @@ foreach ($quantities as $product_id => $quantity) {
 
     $order_items[] = [
         'product_id' => (int) $product['product_id'],
-        'title' => $product['product_title'],
+        'title' => $product['product_title'] . ($size !== '' ? ' (Size ' . $size . ')' : ''),
         'quantity' => (int) $quantity,
         'unit_price' => $unit_price,
         'line_total' => $line_total,
+        'size' => $size,
     ];
 }
 mysqli_stmt_close($product_query);

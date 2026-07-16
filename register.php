@@ -146,8 +146,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
  
         <label for="password">Password</label>
         <input type="password" id="password" name="password" required autocomplete="new-password" minlength="8" aria-describedby="passwordHelp">
-        <p class="field-hint" id="passwordHelp">At least 8 characters, with an uppercase letter, a lowercase letter, and a number.</p>
- 
+        <!-- <p class="field-hint" id="passwordHelp">At least 8 characters, with an uppercase letter, a lowercase letter, and a number.</p>
+  -->
         <label for="confirm_password">Confirm password</label>
         <input type="password" id="confirm_password" name="confirm_password" required autocomplete="new-password" minlength="8">
 

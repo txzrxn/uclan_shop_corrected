@@ -10,6 +10,32 @@ if (!in_array($type, $valid_types, true)) {
 }
 
 $search = trim($_GET['search'] ?? '');
+// Additional research: synonym expansion lets one search term match spelling
+// variations, e.g. "tshirt", "t shirts", and "tee" all match "T-shirt".
+// https://www.php.net/manual/en/function.str-ireplace.php
+function expand_search_terms($search)
+{
+    // Longer variants are listed first so "t shirts" is replaced before "t shirt".
+    $synonym_groups = [
+        'T-shirt' => ['t-shirts', 'tshirts', 't shirts', 'tee shirts', 'tee shirt', 'tshirt', 't shirt', 'tees', 'tee'],
+        'Hoodie'  => ['hoodies', 'hoodys', 'hoody', 'hooded tops', 'hooded top'],
+        'Jumper'  => ['jumpers', 'sweatshirts', 'sweatshirt', 'sweaters', 'sweater', 'pullovers', 'pullover'],
+    ];
+
+    $terms = [$search];
+    $needle = strtolower($search);
+
+    foreach ($synonym_groups as $canonical => $variants) {
+        foreach ($variants as $variant) {
+            if (strpos($needle, $variant) !== false) {
+                $terms[] = trim(str_ireplace($variant, $canonical, $search));
+                break;
+            }
+        }
+    }
+
+    return array_values(array_unique($terms));
+}
 
 $products = [];
 $query_error = '';
@@ -32,11 +58,17 @@ if ($type !== '') {
 }
 
 if ($search !== '') {
-    $sql .= " AND (product_title LIKE ? OR product_desc LIKE ?)";
-    $like = '%' . $search . '%';
-    $params[] = $like;
-    $params[] = $like;
-    $types_str .= 'ss';
+    // Every expanded synonym is joined with OR, still inside a prepared statement.
+    $search_terms = expand_search_terms($search);
+    $search_clauses = [];
+    foreach ($search_terms as $term) {
+        $search_clauses[] = "(product_title LIKE ? OR product_desc LIKE ?)";
+        $like = '%' . $term . '%';
+        $params[] = $like;
+        $params[] = $like;
+        $types_str .= 'ss';
+    }
+    $sql .= " AND (" . implode(" OR ", $search_clauses) . ")";
 }
 
 $sql .= " ORDER BY product_type, product_title";

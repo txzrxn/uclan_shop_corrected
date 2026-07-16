@@ -1,4 +1,27 @@
-# UCLan Legacy Shop, Corrected Database Version
+ UCLan Legacy Shop, Corrected Database Version
+
+## Submission information (required by the brief)
+
+- **Student name:** [YOUR FULL NAME]
+- **Student ID:** [YOUR STUDENT ID, e.g. G21406018]
+- **Homepage URL:** http://localhost/uclan_shop_corrected/ (Vesta: [YOUR VESTA URL])
+- **Dummy account (login/checkout access):** `demo@uclan.ac.uk` / `Legacy2026`
+- **Second seeded account (used for reviews):** `reviewer@uclan.ac.uk` / `Legacy2026`
+- **GitHub repository:** [YOUR GITHUB REPO URL]
+
+Both dummy accounts are inserted automatically when `uclan_shop_corrected.sql` is imported, together with two pre-populated reviews (with scores) for product 21 (Red UCLan Hoodie), so the average rating is visible on `item.php?id=21` without any manual setup.
+
+## Version control (GitHub)
+
+Initialise the repository at the start of development and commit after each working feature, with clear messages, for example:
+
+```
+git init
+git add .
+git commit -m "Add database-driven product listing with type filter"
+```
+
+Aim for regular, small commits (one feature or fix per commit) so the history can be shown during the lab demo.
 
 This version corrects the product, review, cart, order, login, and navigation problems in the submitted project.
 
@@ -20,7 +43,19 @@ This version corrects the product, review, cart, order, login, and navigation pr
 4. Select the database and import `uclan_shop_corrected.sql`.
 5. Copy the `uclan_shop_corrected` folder into `C:\xampp\htdocs\`.
 6. Open `http://localhost/uclan_shop_corrected/`.
-7. Register a new account because the clean SQL file does not include personal user records.
+7. Log in with the dummy account `demo@uclan.ac.uk` / `Legacy2026`, or register a new account.
+
+## Features mapped to the 80+ criteria
+
+- Homepage presents live offers from `tbl_offers` and greets the logged-in user by name in the hero section (PHP sessions across all pages).
+- Products, categories, and the stock filter are all served by fresh MySQL queries — every filter link re-queries the database (no client-side filtering).
+- Textual search uses `LIKE` with `%` wildcards on the title and description in a prepared statement.
+- Each product card offers **Read More** and **Add to Basket**; guests who select Add to Basket are redirected to `login.php` and returned to the product afterwards.
+- `item.php` uses a PHP GET variable (`?id=`) to query the selected product; no `sessionStorage` product data.
+- `tbl_reviews` ships with two seeded, scored reviews for product 21; PHP averages the scores and shows the overall rating numerically and as stars. Logged-in users can post reviews (title, description, rating) via a prepared INSERT.
+- Checkout validates prices server-side, inserts into `tbl_orders`, confirms the record, thanks the user for their custom, and empties the cart.
+- Passwords use bcrypt (`password_hash`/`password_verify`); strong password validation, `htmlspecialchars()` on all output, prepared statements everywhere, CSRF tokens on all state-changing forms, and safe redirect validation on `login.php?next=`.
+- Usability and accessibility: skip links, ARIA labels/live regions, breadcrumbs, responsive hamburger navigation, and a custom `404.php` error page (wired up through `.htaccess`).
 
 The default connection in `includes/db.php` is:
 
@@ -33,16 +68,6 @@ $dbname = 'uclan_shop';
 
 Change these values for a different XAMPP setup or for the Vesta server.
 
-## Existing database option
-
-To preserve an already imported database and its current users:
-
-1. Back up the database first.
-2. Select the existing `uclan_shop` database in phpMyAdmin.
-3. Import `database_fix.sql` once.
-4. Replace the project PHP, CSS, and JavaScript files with the corrected versions.
-
-Do not run `database_fix.sql` repeatedly because it adds the `product_stock` column.
 
 ## Manual testing checklist
 
@@ -91,4 +116,3 @@ The server validates the code again during checkout. Browser calculations are no
 
 This is an assessment shop workflow. Place Order records an order in MySQL but does not process a real payment.
 
-See `ISSUES_AND_FIXES.md` for the full audit.

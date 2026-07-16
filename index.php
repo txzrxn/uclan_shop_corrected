@@ -49,8 +49,13 @@ if (!$offers_result) {
     </header>
     <main>
         <section class="hero" aria-labelledby="heroHeading">
-            <h1 id="heroHeading">Welcome to<span> UCLan </span> Legacy Shop!</h1>
-            <p>The University of Lancashire has rebranded. Grab our iconic UCLan merchandise at discounted rates before it is gone forever!</p>
+            <?php if (is_logged_in()): ?>
+                <h1 id="heroHeading">Welcome back, <span><?php echo h($_SESSION['user_name']); ?></span>!</h1>
+                <p>Good to see you again at the UCLan Legacy Shop. Grab our iconic UCLan merchandise at discounted rates before it is gone forever!</p>
+            <?php else: ?>
+                <h1 id="heroHeading">Welcome to<span> UCLan </span> Legacy Shop!</h1>
+                <p>The University of Lancashire has rebranded. Grab our iconic UCLan merchandise at discounted rates before it is gone forever!</p>
+            <?php endif; ?>
             <a href="products.php" class="btn btn-primary">Browse All Products</a>
         </section>
 
@@ -106,12 +111,6 @@ if (!$offers_result) {
             <p>The University of Lancashire (UoL), formerly known as the <strong>University of Central Lancashire (UCLan)</strong>, is a public university located in <strong>Preston, Lancashire, England</strong>. It was established in 1828 as the Institution for the Diffusion of Knowledge, making it one of the oldest higher education institutions in the United Kingdom.</p>
             <p>With a strong commitment to widening participation, applied research, and industry partnerships, the university serves a global community of students across a broad range of disciplines — from engineering and health sciences to the arts, business, and computing.</p>
             <p>Following a major rebrand in 2025, the university adopted its new name and visual identity. This Legacy Shop exists to celebrate the UCLan era — giving students, staff, and alumni the chance to own a piece of university history at discounted prices.</p>
-           <!-- <div class="uni-stats" aria-label="University statistics">
-                <div class="uni-stat"><span class="stat-number">1828</span><span class="stat-label">Year Founded</span></div>
-                <div class="uni-stat"><span class="stat-number">38,000+</span><span class="stat-label">Students</span></div>
-                <div class="uni-stat"><span class="stat-number">100+</span><span class="stat-label">Countries</span></div>
-                <div class="uni-stat"><span class="stat-number">Preston</span><span class="stat-label">Main Campus</span></div>
-            </div>-->
         </section><br>
 
         <section style="text-align:center; padding:2rem 0;" aria-labelledby="ctaHeading">
@@ -124,10 +123,7 @@ if (!$offers_result) {
     
     <footer class="site-footer" role="contentinfo">
         <div class="footer-inner">
-            <!-- <div class="footer-logo">
-                <img src="images/logo_reverse.png" alt="University of Lancashire logo" class="footer-logo-img">
-                <p>Discounted UCLan merchandise available exclusively to University of Lancashire students, staff, and alumni.</p>
-            </div> -->
+            
             <div class="footer-logo">
                 <img src="images/logo_reverse.png" alt="University of Lancashire logo" class="footer-logo-img">
                 <p>Discounted UCLan merchandise available exclusively to University of Lancashire students, staff, and alumni.</p>

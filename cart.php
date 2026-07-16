@@ -192,7 +192,8 @@ $csrf_token = csrf_token();
         emptyCartMsg.hidden = true;
 
         cart.forEach(function (item, index) {
-            const quantity = Number.parseInt(item.qty, 10) || 1;
+            const quantity = Number.parseInt(item.qty, 10);
+
             const price = Number(item.price) || 0;
             const productId = Number.parseInt(item.productId, 10);
 
@@ -207,7 +208,10 @@ $csrf_token = csrf_token();
 
             const info = document.createElement('div');
             info.className = 'cart-item-info';
-            info.appendChild(makeTextElement('h4', '', String(item.name || 'Product')));
+           info.appendChild(makeTextElement('h4', '', String(item.name || 'Product')));
+            if (item.size) {
+                info.appendChild(makeTextElement('p', 'cart-item-size', 'Size: ' + String(item.size)));
+            }
             info.appendChild(makeTextElement('p', '', 'Price: £' + price.toFixed(2) + ' each'));
             info.appendChild(makeTextElement('p', 'cart-item-price', 'Line total: £' + (price * quantity).toFixed(2)));
 
@@ -369,7 +373,8 @@ $csrf_token = csrf_token();
                     items: cart.map(function (item) {
                         return {
                             product_id: Number.parseInt(item.productId, 10),
-                            quantity: Number.parseInt(item.qty, 10)
+                            quantity: Number.parseInt(item.qty, 10),
+                            size: String(item.size || '')
                         };
                     })
                 })
@@ -384,7 +389,7 @@ $csrf_token = csrf_token();
             appliedDiscount = 0;
             appliedCode = '';
             orderSuccess.innerHTML = '';
-            orderSuccess.appendChild(document.createTextNode('Order #' + data.order_id + ' was saved. Database total: £' + Number(data.total).toFixed(2) + '. '));
+            orderSuccess.appendChild(document.createTextNode('Thank you for your custom! Order #' + data.order_id + ' has been saved to the database. Total charged: £' + Number(data.total).toFixed(2) + '. Your cart has been emptied. '));
             const accountLink = document.createElement('a');
             accountLink.href = 'account.php';
             accountLink.textContent = 'View order history';

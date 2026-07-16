@@ -1096,3 +1096,42 @@ nav[aria-label="Primary navigation"] a.user-greeting-link {
 @media (max-width: 800px) {
     .account-layout { grid-template-columns: 1fr; }
 }
+
+
+/* ===== 80+ criteria additions ===== */
+
+/* Stock filter links re-query the database (marking criterion 10). Styled to match the old filter buttons. */
+.filter-bar a.btn {
+    padding: 0.45rem 1.1rem; border-radius: 20px;
+    border: 2px solid var(--uclan-blue); background: transparent;
+    color: var(--uclan-blue); font-weight: 600; font-size: 0.85rem;
+    text-decoration: none; transition: all var(--transition);
+}
+.filter-bar a.btn.active,
+.filter-bar a.btn:hover { background-color: var(--uclan-blue); color: var(--uclan-white); }
+
+/* Product card image links to the item page (Read more). */
+.product-card-media { display: block; }
+.product-card-media:focus-visible { outline: 3px solid var(--uclan-blue); outline-offset: 2px; }
+
+/* Read More + Add to Basket side by side, equal size (marking criterion 9). */
+.product-card-footer {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+    margin-top: auto;
+}
+.product-card-footer .btn,
+.product-card-footer .product-disabled {
+    flex: 1 1 0;
+    width: auto;               /* cancels the old .view-btn width:100% */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 50px;
+    font-family: inherit;
+    line-height: 1.2;
+    white-space: nowrap;
+}

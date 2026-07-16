@@ -184,12 +184,21 @@ if ($reviews) {
                 <?php else: ?>
                     <p class="rating-summary">No reviews yet.</p>
                 <?php endif; ?>
-
+<?php if (is_logged_in()): ?>
                 <!-- <div class="qty-row">
                     <label for="qtyInput">Quantity:</label>
                     <input type="number" id="qtyInput" class="qty-input" value="1" min="1" max="10" <?php echo $product['product_stock'] === 'out-of-stock' ? 'disabled' : ''; ?>>
                 </div> -->
-
+<div class="qty-row">
+                        <label for="sizeSelect">Size:</label>
+                        <select id="sizeSelect" class="size-select" <?php echo $product['product_stock'] === 'out-of-stock' ? 'disabled' : ''; ?>>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
                     <div class="qty-row">
                     <label for="qtyInput">Quantity:</label>
                     <div class="qty-stepper">
@@ -205,6 +214,15 @@ if ($reviews) {
 
                 <div class="add-confirm-msg" id="confirmMsg" role="status" aria-live="polite">Item added to your cart.</div>
                 <a href="cart.php" class="btn btn-secondary" id="viewCartBtn" style="display:none;">View Cart</a>
+                <?php else: ?>
+                <!-- Marking criterion 9: guests are directed to log in when attempting to add items to their basket. -->
+                <?php if ($product['product_stock'] === 'out-of-stock'): ?>
+                    <button class="btn btn-primary" type="button" disabled>Out of Stock</button>
+                <?php else: ?>
+                    <a href="login.php?next=<?php echo rawurlencode('item.php?id=' . (int) $product_id); ?>" class="btn btn-primary" id="loginToAddBtn">Add to Cart</a>
+                    <p class="login-prompt">You need to be logged in to add items to your basket. Selecting Add to Cart will take you to the login page.</p>
+                <?php endif; ?>
+                <?php endif; ?>
             </article>
         </section>
 
@@ -360,10 +378,18 @@ const product = <?php echo json_encode([
                 showToast('Choose a quantity between 1 and 10.');
                 return;
             }
+            const sizeSelect = document.getElementById('sizeSelect');
+            const validSizes = ['S', 'M', 'L', 'XL', 'XXL'];
+            const size = sizeSelect ? String(sizeSelect.value) : 'M';
+
+            if (validSizes.indexOf(size) === -1) {
+                showToast('Choose a valid size.');
+                return;
+            }
 
             const cart = readCart();
             const existing = cart.find(function (item) {
-                return Number(item.productId) === product.productId;
+               return Number(item.productId) === product.productId && String(item.size || '') === size;
             });
 
             if (existing) {
